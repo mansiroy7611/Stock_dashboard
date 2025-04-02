@@ -61,9 +61,8 @@ if symbol:
         tab1, tab2, tab3 = st.tabs(["📈 Chart View", "📉 Volume & Table", "📥 Export"])
 
         with tab1:
-            st.subheader(f"📈 {symbol} Price Overview ({interval})")
             min_date, max_date = df.index.min(), df.index.max()
-            start, end = st.date_input("📆 Select Date Range", [min_date, max_date], min_value=min_date, max_value=max_date)
+            start, end = st.sidebar.date_input("📆 Select Date Range", [min_date, max_date], min_value=min_date, max_value=max_date)
             df = df[(df.index >= pd.to_datetime(start)) & (df.index <= pd.to_datetime(end))]
 
             show_sma = st.checkbox("Show SMA20 & SMA50", value=True)
@@ -76,10 +75,10 @@ if symbol:
             if chart_type == "Candlestick":
                 fig = go.Figure()
                 fig.add_trace(go.Candlestick(
-                    x=df.index, open=df["Open"], high=df["High"], low=df["Low"], close=df["Close"], name="Candlestick"))
-                if show_sma:
-                    fig.add_trace(go.Scatter(x=df.index, y=df["SMA20"], name="SMA 20", line=dict(color='blue')))
-                    fig.add_trace(go.Scatter(x=df.index, y=df["SMA50"], name="SMA 50", line=dict(color='orange')))
+                x=df.index, open=df["Open"], high=df["High"], low=df["Low"], close=df["Close"], name="Candlestick"))
+            if show_sma:
+                fig.add_trace(go.Scatter(x=df.index, y=df["SMA20"], name="SMA 20", line=dict(color='blue')))
+                fig.add_trace(go.Scatter(x=df.index, y=df["SMA50"], name="SMA 50", line=dict(color='orange')))
                 fig.update_layout(xaxis_rangeslider_visible=False, template="plotly_white")
                 st.plotly_chart(fig, use_container_width=True)
 
@@ -88,6 +87,7 @@ if symbol:
 
             elif chart_type == "Area":
                 st.area_chart(df["Close"])
+
 
         with tab2:
             st.subheader("📉 Volume Chart")
