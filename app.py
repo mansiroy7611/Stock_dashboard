@@ -9,7 +9,7 @@ import pytz
 # Page settings
 st.set_page_config(page_title="📈 Interactive Stock Dashboard", layout="wide")
 st.title("📊 MarketPulse: Interactive Stock Dashboard")
-st.markdown("---")
+
 
 # --- Sidebar: Search and Settings ---
 st.sidebar.header("🔍 Search & Settings")
